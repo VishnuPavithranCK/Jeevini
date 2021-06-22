@@ -13,7 +13,7 @@ class _NewsPageState extends State<NewsPage> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        title: Text('News'),
+        title: Text('News list added'),
         actions: [
           IconButton(
             onPressed: (){
