@@ -4,13 +4,16 @@ import 'package:jeevini/models/constants.dart';
 class CustomTextField extends StatelessWidget {
  final String hintText;
 final bool obscureText;
- CustomTextField({@required this.hintText,@required this.obscureText});
+final Function onChanged;
+ CustomTextField({@required this.hintText,@required this.obscureText,@required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
     return Container(
                         height: 40,
                         child: TextField(
+                          
+                          onChanged: onChanged,
                            obscureText: obscureText,
                           cursorColor: Colors.black,
                           decoration: InputDecoration(

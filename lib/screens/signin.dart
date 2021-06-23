@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:jeevini/widgets/bottom_bar.dart';
 import 'package:jeevini/widgets/custom_button.dart';
 import 'package:jeevini/widgets/custom_text_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignIn extends StatefulWidget {
+  static const String routeName = 'signInPage';
   @override
   _SignInState createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
+  final _auth = FirebaseAuth.instance;
+   String LogEmail;
+   String LoginPass;
+  bool spinner = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,11 +67,17 @@ class _SignInState extends State<SignIn> {
                       ),
                       SizedBox(height: 10),
                       CustomTextField(
+                        onChanged: (login) {
+                      LogEmail = login;
+                    },
                         hintText: 'Email',
                         obscureText: false,
                       ),
                       SizedBox(height: 10),
                       CustomTextField(
+                        onChanged: (logpass) {
+                      LoginPass = logpass;
+                    },
                         hintText: 'Password',
                         obscureText: true,
                       ),
@@ -79,7 +92,26 @@ class _SignInState extends State<SignIn> {
                         ],
                       ),
                        SizedBox(height: 10),
-                      CustomButton(buttonText: 'Sign In'),
+                      CustomButton(
+                        buttonText: 'Sign In',
+                          onPressed: () async {
+                      setState(() {
+                        spinner = true;
+                      });
+                      try {
+                        final user = await _auth.signInWithEmailAndPassword(
+                            email: LogEmail, password: LoginPass);
+                        if (user != null) {
+                          Navigator.pushNamed(context, BottomBar.routeName);
+                        }
+                        setState(() {
+                          spinner = false;
+                        });
+                      } catch (e) {
+                        print(e);
+                      }
+                    },
+                        ),
                       SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

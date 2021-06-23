@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:jeevini/screens/news_listing.dart';
 import 'package:jeevini/screens/signin.dart';
 import 'package:jeevini/screens/signup.dart';
-import 'package:jeevini/screens/news_listing.dart';
+import 'package:jeevini/widgets/bottom_bar.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,8 +17,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: NewsPage(),
+     initialRoute: SignUP.routeName,
+      routes: {
+          SignIn.routeName: (context) => SignIn(),
+          SignUP.routeName: (context) => SignUP(),
+          BottomBar.routeName: (context) => BottomBar(),
+        },
     );
   }
 }
-

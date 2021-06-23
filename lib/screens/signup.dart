@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:jeevini/screens/signin.dart';
 import 'package:jeevini/widgets/custom_button.dart';
 import 'package:jeevini/widgets/custom_text_field.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUP extends StatefulWidget {
- 
+  static const String routeName = 'signUpPage';
   @override
   _SignUPState createState() => _SignUPState();
 }
 
 class _SignUPState extends State<SignUP> {
+   final _auth = FirebaseAuth.instance;
+  String Email;
+  String Password;
+  String ConfirmPass;
+  bool spinner = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,21 +68,51 @@ class _SignUPState extends State<SignUP> {
                       ),
                       SizedBox(height: 10),
                       CustomTextField(
+                         onChanged: (email) {
+                      Email = email;
+                    },
                         hintText: 'Email',
                         obscureText: false,
                       ),
                       SizedBox(height: 10),
                       CustomTextField(
+                          onChanged: (password) {
+                      Password = password;
+                    },
                         hintText: 'Password',
                         obscureText: true,
                       ),
                       SizedBox(height: 10),
                       CustomTextField(
+                        onChanged: (value){
+                         ConfirmPass = value;
+                         if(ConfirmPass != Password){
+                           return 'Password Mismatch';
+                         }
+                        },
                         hintText: 'Confirm Password',
                         obscureText: true,
                       ),
                       SizedBox(height: 10),
-                      CustomButton(buttonText: 'Sign Up'),
+                      CustomButton(
+                        buttonText: 'Sign Up',
+                         onPressed: () async{
+                      setState(() {
+                        spinner = true;
+                      });
+                   try {
+                     final newUser = await _auth.createUserWithEmailAndPassword(
+                         email: Email, password: Password);
+                     if (newUser != null){
+                       Navigator.pushNamed(context, SignIn.routeName);
+                     }
+                     setState(() {
+                       spinner = false;
+                     });
+                   }catch(e){
+                       print(e);
+                   }
+                    },),
                       SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
