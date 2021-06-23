@@ -25,7 +25,6 @@ class _NewsPageState extends State<NewsPage> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: Text('News List'),
-        
       ),
       body: FutureBuilder<Welcome>(
         future: ApiManager().getNews(),
